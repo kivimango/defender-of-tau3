@@ -2,6 +2,9 @@ package com.kivimango.spacefighter;
 
 import java.awt.Canvas;
 import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.image.BufferStrategy;
+import java.awt.image.BufferedImage;
 
 import javax.swing.JFrame;
 
@@ -27,6 +30,8 @@ public class Game extends Canvas implements Runnable {
 	
 	private boolean running;
 	private Thread thread;
+	
+	private BufferedImage image = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
 	
 	/**
 	 * Spawning a new thread with checking if the game is already started.
@@ -113,7 +118,19 @@ public class Game extends Canvas implements Runnable {
 	}
 	
 	private void render() {
+		BufferStrategy bs = this.getBufferStrategy();
 		
+		if(bs == null ) {
+			createBufferStrategy(3);
+			return;
+		}
+		
+		Graphics g = bs.getDrawGraphics();
+		
+		g.drawImage(image, 0, 0, getWidth(), getHeight(), this);
+		
+		g.dispose();
+		bs.show();
 	}
 	
 	public static void main(String[] args) {
