@@ -41,7 +41,7 @@ public class Game extends Canvas implements Runnable {
 			return;
 		
 		running = true;
-		thread = new Thread();
+		thread = new Thread(this);
 		thread.start();
 	}
 	
@@ -65,7 +65,55 @@ public class Game extends Canvas implements Runnable {
 
 	@Override
 	public void run() {
-		start();
+		long lastTime = System.nanoTime();
+		
+		// The game will run in 60 FPS
+		final double amountOfTicks = 60.0;
+		double nanoSeconds = 1000000000 / amountOfTicks;
+		double delta = 0;
+		
+		// FPS measuring related variables
+		int updates = 0;
+		int frames = 0;
+		long timer = System.currentTimeMillis();
+		
+		/** The game loop itself.The code in this block will be executed until the conditions met, eg: user closes the program,
+		 * the player wins or dies, etc.The game will be updated 60x times in one second.
+		 * In this way, we make sure the game will run on the same speed on every PC 
+		 * (the problem is, the machines computes too fast, so the game would be run by 150 billion FPS...
+		 * we don't want that, thats why we have to update 60x in one second)
+		 */
+		
+		while (running) {
+			long now = System.nanoTime();
+			delta += (now - lastTime) / nanoSeconds;
+			lastTime = now;
+			
+			if(delta >= 1) {
+				tick();
+				updates++;
+				delta--;
+			}
+			render();
+			frames++;
+			
+			if(System.currentTimeMillis() - timer > 1000) {
+				timer += 1000;
+				System.out.println("Ticks: " + updates + " FPS: " + frames);
+				updates = 0;
+				frames = 0;
+			}
+		}
+		
+		stop();
+	}
+	
+	private void tick() {
+		
+	}
+	
+	private void render() {
+		
 	}
 	
 	public static void main(String[] args) {
@@ -86,6 +134,7 @@ public class Game extends Canvas implements Runnable {
 		frame.setLocationRelativeTo(null);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setVisible(true);
+		game.start();
 	}
 
 }
