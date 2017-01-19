@@ -5,6 +5,7 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
 
 import javax.swing.JFrame;
 
@@ -32,6 +33,19 @@ public class Game extends Canvas implements Runnable {
 	private Thread thread;
 	
 	private BufferedImage image = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
+	private BufferedImage spriteSheet;
+	private BufferedImage player;
+	
+	public void init() {
+		BufferedImageLoader loader = new BufferedImageLoader();
+		try {
+			spriteSheet = loader.loadImage("/spritesheet/player.png");
+			SpriteSheet ss = new SpriteSheet(spriteSheet);
+			player = ss.grabImage(1, 1, 64, 29);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 	
 	/**
 	 * Spawning a new thread with checking if the game is already started.
@@ -70,6 +84,7 @@ public class Game extends Canvas implements Runnable {
 
 	@Override
 	public void run() {
+		init();
 		long lastTime = System.nanoTime();
 		
 		// The game will run in 60 FPS
@@ -128,6 +143,7 @@ public class Game extends Canvas implements Runnable {
 		Graphics g = bs.getDrawGraphics();
 		
 		g.drawImage(image, 0, 0, getWidth(), getHeight(), this);
+		g.drawImage(player, 100, 100, this);
 		
 		g.dispose();
 		bs.show();
