@@ -31,6 +31,23 @@ public class Player {
 	public void tick() {
 		x+=velX;
 		y+=velY;
+			
+		// Basic collision bounds : the player can't go out from the game window
+		// On the right side of the window (X axis), we have to subtract the width of the player sprite from the actual window width
+		// On the bottom of the window (Y axis), we have to subtract the height of the player sprite from the actual window height
+		
+		if(x < 0) {
+			x = 0;
+		}
+		if(x >= 640-20) {
+			x = 640-20;
+		}
+		if(y <= 0) {
+			y = 0;
+		}
+		if(y >= 480-60) {
+			y = 480-60;
+		}
 	}
 	
 	public void render(Graphics g) {
