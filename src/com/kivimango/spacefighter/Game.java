@@ -3,6 +3,7 @@ package com.kivimango.spacefighter;
 import java.awt.Canvas;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.event.KeyEvent;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -38,8 +39,10 @@ public class Game extends Canvas implements Runnable {
 	
 	public void init() {
 		BufferedImageLoader loader = new BufferedImageLoader();
+		
 		try {
 			spriteSheet = loader.loadImage("/spritesheet/player.png");
+			addKeyListener(new KeyInput(this));
 			player = new Player(200, 200, this);
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -129,7 +132,6 @@ public class Game extends Canvas implements Runnable {
 	
 	private void tick() {
 		player.tick();
-		
 	}
 	
 	private void render() {
@@ -148,6 +150,21 @@ public class Game extends Canvas implements Runnable {
 		
 		g.dispose();
 		bs.show();
+	}
+	
+	public void keyPressed(KeyEvent e) {
+		int key = e.getKeyCode();
+		
+		switch(key) {
+		case KeyEvent.VK_RIGHT : player.setX(player.getX() + 5); break;
+		case KeyEvent.VK_LEFT : player.setX(player.getX() - 5); break;
+		case KeyEvent.VK_DOWN : player.setY(player.getY() + 5); break;
+		case KeyEvent.VK_UP : player.setY(player.getY() - 5); break;
+		}
+	}
+	
+	public void keyReleased(KeyEvent e) {
+		
 	}
 	
 	public static void main(String[] args) {

@@ -18,7 +18,6 @@ public class Player {
 	private BufferedImage playerSprite;
 	
 	public Player(double x, double y, Game game) {
-		super();
 		this.x = x;
 		this.y = y;
 		
@@ -27,12 +26,28 @@ public class Player {
 		playerSprite = ss.grabImage(1, 1, 29, 64);
 	}
 	
-	public void tick() {
-		x++;
-	}
-	
 	public void render(Graphics g) {
 		g.drawImage(playerSprite, (int)x, (int)y, null);
+	}
+	
+	public double getX() {
+		return x;
+	}
+
+	public void setX(double x) {
+		this.x = x;
+	}
+
+	public double getY() {
+		return y;
+	}
+
+	public void setY(double y) {
+		this.y = y;
+	}
+
+	public void tick() {
+		
 	}
 	
 }
