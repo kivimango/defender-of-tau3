@@ -15,6 +15,8 @@ public class Player {
 	
 	private double x;
 	private double y;
+	private double velX;
+	private double velY;
 	private BufferedImage playerSprite;
 	
 	public Player(double x, double y, Game game) {
@@ -24,6 +26,11 @@ public class Player {
 		SpriteSheet ss = new SpriteSheet(game.getSpriteSheet());
 		
 		playerSprite = ss.grabImage(1, 1, 29, 64);
+	}
+	
+	public void tick() {
+		x+=velX;
+		y+=velY;
 	}
 	
 	public void render(Graphics g) {
@@ -46,8 +53,11 @@ public class Player {
 		this.y = y;
 	}
 
-	public void tick() {
-		
+	public void setVelX(double velX) {
+		this.velX = velX;
 	}
-	
+
+	public void setVelY(double velY) {
+		this.velY = velY;
+	}
 }
