@@ -36,6 +36,8 @@ public class Game extends Canvas implements Runnable {
 	private BufferedImage image = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
 	private BufferedImage spriteSheet;
 	private BufferedImage bulletSpriteSheet;
+	private BufferedImage backgroundImage;
+	
 	private Player player;
 	Controller controller;
 	
@@ -46,13 +48,14 @@ public class Game extends Canvas implements Runnable {
 		try {
 			spriteSheet = loader.loadImage("/spritesheet/player.png");
 			bulletSpriteSheet = loader.loadImage("/spritesheet/M484BulletCollection1.png");
+			backgroundImage = loader.loadImage("/background/starfield.png");
+			
 			addKeyListener(new KeyInput(this));
 			player = new Player(200, 200, this);
 			controller = new Controller(this);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
 		
 	}
 	
@@ -153,6 +156,7 @@ public class Game extends Canvas implements Runnable {
 		Graphics g = bs.getDrawGraphics();
 		
 		g.drawImage(image, 0, 0, getWidth(), getHeight(), this);
+		g.drawImage(backgroundImage, 0, 0, this);
 		
 		player.render(g);
 		controller.render(g);
@@ -169,8 +173,13 @@ public class Game extends Canvas implements Runnable {
 			case KeyEvent.VK_LEFT : player.setVelX(-5); break;
 			case KeyEvent.VK_DOWN : player.setVelY(5); break;
 			case KeyEvent.VK_UP : player.setVelY(-5); break;
-			case KeyEvent.VK_SPACE : controller.addBullet(new Bullet(player.getX(), player.getY(), this)); break;
 		}
+		// prevent form the player to shoot endless stream of bullets
+		if(key == KeyEvent.VK_SPACE && !player.isShooting()) {
+			player.setShooting(true);
+			controller.addBullet(new Bullet(player.getX(), player.getY(), this));
+		}
+		
 	}
 	
 	public void keyReleased(KeyEvent e) {
@@ -181,6 +190,8 @@ public class Game extends Canvas implements Runnable {
 			case KeyEvent.VK_LEFT : player.setVelX(0); break;
 			case KeyEvent.VK_DOWN : player.setVelY(0); break;
 			case KeyEvent.VK_UP : player.setVelY(0); break;
+			// forcing the player to release the SPACe key to able to shoot again
+			case KeyEvent.VK_SPACE : player.setShooting(false); break;
 		}
 	}
 	

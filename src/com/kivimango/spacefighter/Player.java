@@ -18,6 +18,7 @@ public class Player {
 	private double velX;
 	private double velY;
 	private BufferedImage playerSprite;
+	private boolean shooting = false;
 	
 	public Player(double x, double y, Game game) {
 		this.x = x;
@@ -76,5 +77,13 @@ public class Player {
 
 	public void setVelY(double velY) {
 		this.velY = velY;
+	}
+
+	public boolean isShooting() {
+		return shooting;
+	}
+
+	public void setShooting(boolean shooting) {
+		this.shooting = shooting;
 	}
 }
