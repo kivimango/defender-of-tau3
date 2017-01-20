@@ -35,7 +35,9 @@ public class Game extends Canvas implements Runnable {
 	
 	private BufferedImage image = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
 	private BufferedImage spriteSheet;
+	private BufferedImage bulletSpriteSheet;
 	private Player player;
+	Controller controller;
 	
 	public void init() {
 		requestFocus();
@@ -43,11 +45,15 @@ public class Game extends Canvas implements Runnable {
 		
 		try {
 			spriteSheet = loader.loadImage("/spritesheet/player.png");
+			bulletSpriteSheet = loader.loadImage("/spritesheet/M484BulletCollection1.png");
 			addKeyListener(new KeyInput(this));
 			player = new Player(200, 200, this);
+			controller = new Controller(this);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		
+		
 	}
 	
 	/**
@@ -133,6 +139,7 @@ public class Game extends Canvas implements Runnable {
 	
 	private void tick() {
 		player.tick();
+		controller.tick();
 	}
 	
 	private void render() {
@@ -148,6 +155,7 @@ public class Game extends Canvas implements Runnable {
 		g.drawImage(image, 0, 0, getWidth(), getHeight(), this);
 		
 		player.render(g);
+		controller.render(g);
 		
 		g.dispose();
 		bs.show();
@@ -161,6 +169,7 @@ public class Game extends Canvas implements Runnable {
 			case KeyEvent.VK_LEFT : player.setVelX(-5); break;
 			case KeyEvent.VK_DOWN : player.setVelY(5); break;
 			case KeyEvent.VK_UP : player.setVelY(-5); break;
+			case KeyEvent.VK_SPACE : controller.addBullet(new Bullet(player.getX(), player.getY(), this)); break;
 		}
 	}
 	
@@ -198,6 +207,10 @@ public class Game extends Canvas implements Runnable {
 	
 	public BufferedImage getSpriteSheet() {
 		return spriteSheet;
+	}
+	
+	public BufferedImage getBulletSpriteSheet() {
+		return bulletSpriteSheet;
 	}
 
 }
