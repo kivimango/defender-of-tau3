@@ -36,10 +36,12 @@ public class Game extends Canvas implements Runnable {
 	private BufferedImage image = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
 	private BufferedImage spriteSheet;
 	private BufferedImage bulletSpriteSheet;
+	private BufferedImage enemySpriteSheet;
 	private BufferedImage backgroundImage;
 	
 	private Player player;
-	Controller controller;
+	private Controller controller;
+	private Textures textures;
 	
 	public void init() {
 		requestFocus();
@@ -48,11 +50,15 @@ public class Game extends Canvas implements Runnable {
 		try {
 			spriteSheet = loader.loadImage("/spritesheet/player.png");
 			bulletSpriteSheet = loader.loadImage("/spritesheet/M484BulletCollection1.png");
+			enemySpriteSheet = loader.loadImage("/spritesheet/enemy.png");
 			backgroundImage = loader.loadImage("/background/starfield.png");
 			
 			addKeyListener(new KeyInput(this));
-			player = new Player(200, 200, this);
-			controller = new Controller(this);
+			
+			textures = new Textures(this);
+			
+			player = new Player(200, 200, textures);
+			controller = new Controller(this, textures);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -177,7 +183,7 @@ public class Game extends Canvas implements Runnable {
 		// prevent form the player to shoot endless stream of bullets
 		if(key == KeyEvent.VK_SPACE && !player.isShooting()) {
 			player.setShooting(true);
-			controller.addBullet(new Bullet(player.getX(), player.getY(), this));
+			controller.addBullet(new Bullet(player.getX(), player.getY()-25, textures));
 		}
 		
 	}
@@ -190,7 +196,7 @@ public class Game extends Canvas implements Runnable {
 			case KeyEvent.VK_LEFT : player.setVelX(0); break;
 			case KeyEvent.VK_DOWN : player.setVelY(0); break;
 			case KeyEvent.VK_UP : player.setVelY(0); break;
-			// forcing the player to release the SPACe key to able to shoot again
+			// forcing the player to release the SPACE key to able to shoot again
 			case KeyEvent.VK_SPACE : player.setShooting(false); break;
 		}
 	}
@@ -222,6 +228,10 @@ public class Game extends Canvas implements Runnable {
 	
 	public BufferedImage getBulletSpriteSheet() {
 		return bulletSpriteSheet;
+	}
+	
+	public BufferedImage getEnemySpriteSheet() {
+		return enemySpriteSheet;
 	}
 
 }

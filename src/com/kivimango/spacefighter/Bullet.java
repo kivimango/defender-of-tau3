@@ -1,7 +1,6 @@
 package com.kivimango.spacefighter;
 
 import java.awt.Graphics;
-import java.awt.image.BufferedImage;
 
 /**
  * Bullet class storing data of a particular bullet.
@@ -15,15 +14,12 @@ public class Bullet {
 	
 	private double x;
 	private double y;
-	BufferedImage bulletSprite;
+	private Textures texture;
 	
-	public Bullet(double x, double y, Game game) {
+	public Bullet(double x, double y, Textures texture) {
 		this.x = x;
 		this.y = y;
-		
-		// TO-DO: FIX: every new instance of a bullet will load the sprite again
-		SpriteSheet ss = new SpriteSheet(game.getBulletSpriteSheet());
-		bulletSprite = ss.grabImage(1, 1, 20, 20);
+		this.texture = texture;
 	}
 	
 	public void tick() {
@@ -31,7 +27,7 @@ public class Bullet {
 	}
 	
 	public void render(Graphics g) {
-		g.drawImage(bulletSprite, (int)x, (int)y, null);
+		g.drawImage(texture.bulletSprite, (int)x, (int)y, null);
 	}
 	
 	public double getY() {

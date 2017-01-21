@@ -4,7 +4,7 @@ import java.awt.Graphics;
 import java.util.LinkedList;
 
 /**
- * Controller class for controlling game components like bullets.
+ * Controller class for controlling game components like bullets, enemies.
  * 
  * @author RealTutsGML
  * @link https://www.youtube.com/channel/UCOs7Q7IeuzgRyARaEqif75A
@@ -13,12 +13,17 @@ import java.util.LinkedList;
 
 public class Controller {
 	
-	LinkedList<Bullet> bullets = new LinkedList<Bullet>();
-	Bullet tempBullet;
-	Game game;
+	private LinkedList<Bullet> bullets = new LinkedList<Bullet>();
+	private LinkedList<Enemy> enemies = new LinkedList<Enemy>();
+	private Bullet tempBullet;
+	private Enemy tempEnemy;
 	
-	public Controller(Game game) {
-		this.game = game;
+	public Controller(Game game, Textures textures) {
+		
+		
+		for(int x=0; x<(Game.WIDTH * Game.SCALE); x+=64) {
+			addEnemy(new Enemy(x, 0, textures));
+		}
 	}
 	
 	public void tick() {
@@ -31,13 +36,26 @@ public class Controller {
 			
 			tempBullet.tick();
 		}
+		
+		for(int i=0; i<enemies.size(); i++) {
+			tempEnemy = enemies.get(i);
+			tempEnemy.tick();
+		}
 	}
 	
 	public void render(Graphics g) {
+		// Rendering player bullets...
 		for(int i=0; i<bullets.size(); i++) {
 			tempBullet = bullets.get(i);
 			
 			tempBullet.render(g);
+		}
+		
+		// Rendering enemies...
+		for(int i=0; i<enemies.size(); i++) {
+			tempEnemy = enemies.get(i);
+			
+			tempEnemy.render(g);
 		}
 	}
 	
@@ -47,6 +65,14 @@ public class Controller {
 	
 	public void removeBullet(Bullet block) {
 		bullets.remove(block);
+	}
+	
+	public void addEnemy(Enemy enemy) {
+		enemies.add(enemy);
+	}
+	
+	public void removeEnemy(Enemy enemy) {
+		enemies.remove(enemy);
 	}
 
 }

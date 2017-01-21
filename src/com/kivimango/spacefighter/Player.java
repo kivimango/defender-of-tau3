@@ -1,7 +1,6 @@
 package com.kivimango.spacefighter;
 
 import java.awt.Graphics;
-import java.awt.image.BufferedImage;
 
 /**
  * Player class storing player data.
@@ -17,16 +16,13 @@ public class Player {
 	private double y;
 	private double velX;
 	private double velY;
-	private BufferedImage playerSprite;
+	private Textures texture;
 	private boolean shooting = false;
 	
-	public Player(double x, double y, Game game) {
+	public Player(double x, double y, Textures texture) {
 		this.x = x;
 		this.y = y;
-		
-		SpriteSheet ss = new SpriteSheet(game.getSpriteSheet());
-		
-		playerSprite = ss.grabImage(1, 1, 29, 64);
+		this.texture = texture;
 	}
 	
 	public void tick() {
@@ -52,7 +48,7 @@ public class Player {
 	}
 	
 	public void render(Graphics g) {
-		g.drawImage(playerSprite, (int)x, (int)y, null);
+		g.drawImage(texture.playerSprite, (int)x, (int)y, null);
 	}
 	
 	public double getX() {
