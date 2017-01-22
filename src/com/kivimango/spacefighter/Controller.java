@@ -2,9 +2,11 @@ package com.kivimango.spacefighter;
 
 import java.awt.Graphics;
 import java.util.LinkedList;
+import java.util.Random;
 
 /**
  * Controller class for controlling game components like bullets, enemies.
+ * These components must implement the EntityInterface.
  * 
  * @author RealTutsGML
  * @link https://www.youtube.com/channel/UCOs7Q7IeuzgRyARaEqif75A
@@ -13,66 +15,35 @@ import java.util.LinkedList;
 
 public class Controller {
 	
-	private LinkedList<Bullet> bullets = new LinkedList<Bullet>();
-	private LinkedList<Enemy> enemies = new LinkedList<Enemy>();
-	private Bullet tempBullet;
-	private Enemy tempEnemy;
+	private LinkedList<EntityInterface> entities = new LinkedList<EntityInterface>();
+	private EntityInterface ent;
+	Random randomNumberGenerator = new Random();
 	
-	public Controller(Game game, Textures textures) {
-		
-		
-		for(int x=0; x<(Game.WIDTH * Game.SCALE); x+=64) {
-			addEnemy(new Enemy(x, 0, textures));
+	public Controller(Textures textures) {
+		for(int i=0; i<6; i++) {
+			addEntity(new Enemy(randomNumberGenerator.nextInt(640), randomNumberGenerator.nextInt(10), textures));
 		}
 	}
 	
 	public void tick() {
-		for(int i=0; i<bullets.size(); i++) {
-			tempBullet = bullets.get(i);
-			
-			if(tempBullet.getY() < 0) {
-				removeBullet(tempBullet);
-			}
-			
-			tempBullet.tick();
-		}
-		
-		for(int i=0; i<enemies.size(); i++) {
-			tempEnemy = enemies.get(i);
-			tempEnemy.tick();
+		for(int i=0; i<entities.size(); i++) {
+			ent = entities.get(i);
+			ent.tick();
 		}
 	}
 	
 	public void render(Graphics g) {
-		// Rendering player bullets...
-		for(int i=0; i<bullets.size(); i++) {
-			tempBullet = bullets.get(i);
-			
-			tempBullet.render(g);
-		}
-		
-		// Rendering enemies...
-		for(int i=0; i<enemies.size(); i++) {
-			tempEnemy = enemies.get(i);
-			
-			tempEnemy.render(g);
+		for(int i=0; i<entities.size(); i++) {
+			ent = entities.get(i);
+			ent.render(g);
 		}
 	}
 	
-	public void addBullet(Bullet block) {
-		bullets.add(block);
+	public void addEntity(EntityInterface block) {
+		entities.add(block);
 	}
 	
-	public void removeBullet(Bullet block) {
-		bullets.remove(block);
+	public void removeEntity(EntityInterface block) {
+		entities.remove(block);
 	}
-	
-	public void addEnemy(Enemy enemy) {
-		enemies.add(enemy);
-	}
-	
-	public void removeEnemy(Enemy enemy) {
-		enemies.remove(enemy);
-	}
-
 }

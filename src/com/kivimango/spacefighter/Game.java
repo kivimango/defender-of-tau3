@@ -58,7 +58,7 @@ public class Game extends Canvas implements Runnable {
 			textures = new Textures(this);
 			
 			player = new Player(200, 200, textures);
-			controller = new Controller(this, textures);
+			controller = new Controller(textures);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -183,7 +183,7 @@ public class Game extends Canvas implements Runnable {
 		// prevent form the player to shoot endless stream of bullets
 		if(key == KeyEvent.VK_SPACE && !player.isShooting()) {
 			player.setShooting(true);
-			controller.addBullet(new Bullet(player.getX(), player.getY()-25, textures));
+			controller.addEntity(new Bullet(player.getX(), player.getY()-25, textures));
 		}
 		
 	}

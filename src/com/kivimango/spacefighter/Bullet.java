@@ -10,7 +10,7 @@ import java.awt.Graphics;
  * @see <a href="https://www.youtube.com/watch?v=FjTDgspqIBo">Java Game Development #10 - Shooting Bullets!</a>
  */
 
-public class Bullet {
+public class Bullet implements EntityInterface {
 	
 	private double x;
 	private double y;
@@ -32,6 +32,10 @@ public class Bullet {
 	
 	public double getY() {
 		return y;
+	}
+
+	public double getX() {
+		return x;
 	}
 
 }

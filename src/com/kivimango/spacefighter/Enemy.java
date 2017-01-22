@@ -10,7 +10,7 @@ import java.awt.Graphics;
  * @see <a href="https://www.youtube.com/watch?v=hJ2wXMQ9Wfk">Java Game Development #12 - Adding Enemies</a>
  */
 
-public class Enemy {
+public class Enemy implements EntityInterface {
 	
 	private double x, y;
 	private Textures texture;
@@ -27,5 +27,17 @@ public class Enemy {
 	
 	public void render(Graphics g) {
 		g.drawImage(texture.enemySprite, (int)x, (int)y, null);
+	}
+
+	public double getY() {
+		return y;
+	}
+
+	public void setY(double y) {
+		this.y = y;
+	}
+
+	public double getX() {
+		return x;
 	}
 }
