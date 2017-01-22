@@ -1,6 +1,7 @@
 package com.kivimango.spacefighter;
 
 import java.awt.Graphics;
+import java.util.Random;
 
 /**
  * Enemy class storing data of a particular enemy.
@@ -14,6 +15,8 @@ public class Enemy implements EntityInterface {
 	
 	private double x, y;
 	private Textures texture;
+	private Random randomNumberGenerator = new Random();
+	private int speed = randomNumberGenerator.nextInt(3) + 1;
 	
 	public Enemy(double x, double y, Textures texture) {
 		this.x = x;
@@ -22,7 +25,12 @@ public class Enemy implements EntityInterface {
 	}
 	
 	public void tick() {
-		y += 5;
+		y += speed;
+		if(y > Game.HEIGHT * Game.SCALE) {
+			speed = randomNumberGenerator.nextInt(3) + 1;
+			x = randomNumberGenerator.nextInt(640);
+			y = -10;
+		}
 	}
 	
 	public void render(Graphics g) {

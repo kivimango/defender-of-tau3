@@ -43,6 +43,9 @@ public class Game extends Canvas implements Runnable {
 	private Controller controller;
 	private Textures textures;
 	
+	private int enemyCount = 1;
+	private int enemyKilled = 0;
+	
 	public void init() {
 		requestFocus();
 		BufferedImageLoader loader = new BufferedImageLoader();
@@ -59,6 +62,7 @@ public class Game extends Canvas implements Runnable {
 			
 			player = new Player(200, 200, textures);
 			controller = new Controller(textures);
+			controller.createEnemy(enemyCount);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -232,6 +236,22 @@ public class Game extends Canvas implements Runnable {
 	
 	public BufferedImage getEnemySpriteSheet() {
 		return enemySpriteSheet;
+	}
+
+	public int getEnemyCount() {
+		return enemyCount;
+	}
+
+	public void setEnemyCount(int enemyCount) {
+		this.enemyCount = enemyCount;
+	}
+
+	public int getEnemyKilled() {
+		return enemyKilled;
+	}
+
+	public void setEnemyKilled(int enemyKilled) {
+		this.enemyKilled = enemyKilled;
 	}
 
 }

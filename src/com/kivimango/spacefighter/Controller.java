@@ -18,10 +18,15 @@ public class Controller {
 	private LinkedList<EntityInterface> entities = new LinkedList<EntityInterface>();
 	private EntityInterface ent;
 	Random randomNumberGenerator = new Random();
+	Textures texture;
 	
 	public Controller(Textures textures) {
-		for(int i=0; i<6; i++) {
-			addEntity(new Enemy(randomNumberGenerator.nextInt(640), randomNumberGenerator.nextInt(10), textures));
+		this.texture = textures;
+	}
+	
+	public void createEnemy(int enemyCount) {
+		for(int i=0; i<enemyCount; i++) {
+			addEntity(new Enemy(randomNumberGenerator.nextInt(640), -10, texture));
 		}
 	}
 	
