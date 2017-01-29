@@ -1,6 +1,9 @@
 package com.kivimango.spacefighter;
 
 import java.awt.Graphics;
+import java.awt.Rectangle;
+
+import com.kivimango.spacefighter.entities.PlayerEntity;
 
 /**
  * Player class storing player data.
@@ -10,18 +13,15 @@ import java.awt.Graphics;
  * @see <a href="https://www.youtube.com/watch?v=oyWyo6fdGRo">Java Game Development #6 - Player Class</a>
  */
 
-public class Player {
+public class Player extends GameObject implements PlayerEntity{
 	
-	private double x;
-	private double y;
 	private double velX;
 	private double velY;
 	private Textures texture;
 	private boolean shooting = false;
 	
 	public Player(double x, double y, Textures texture) {
-		this.x = x;
-		this.y = y;
+		super(x,y);
 		this.texture = texture;
 	}
 	
@@ -49,6 +49,10 @@ public class Player {
 	
 	public void render(Graphics g) {
 		g.drawImage(texture.playerSprite, (int)x, (int)y, null);
+	}
+	
+	public Rectangle getBounds() {
+		return new Rectangle((int)x, (int)y, texture.playerSprite.getWidth(), texture.playerSprite.getHeight());
 	}
 	
 	public double getX() {

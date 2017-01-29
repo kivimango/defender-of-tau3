@@ -4,6 +4,9 @@ import java.awt.Graphics;
 import java.util.LinkedList;
 import java.util.Random;
 
+import com.kivimango.spacefighter.entities.BulletEntity;
+import com.kivimango.spacefighter.entities.EnemyEntity;
+
 /**
  * Controller class for controlling game components like bullets, enemies.
  * These components must implement the EntityInterface.
@@ -15,8 +18,9 @@ import java.util.Random;
 
 public class Controller {
 	
-	private LinkedList<EntityInterface> entities = new LinkedList<EntityInterface>();
-	private EntityInterface ent;
+	private LinkedList<BulletEntity> bullets = new LinkedList<BulletEntity>();
+	private LinkedList<EnemyEntity> enemies = new LinkedList<EnemyEntity>();
+	
 	Random randomNumberGenerator = new Random();
 	Textures texture;
 	
@@ -26,29 +30,51 @@ public class Controller {
 	
 	public void createEnemy(int enemyCount) {
 		for(int i=0; i<enemyCount; i++) {
-			addEntity(new Enemy(randomNumberGenerator.nextInt(640), -10, texture));
+			addEnemy(new Enemy(randomNumberGenerator.nextInt(640), -10, texture));
 		}
 	}
 	
 	public void tick() {
-		for(int i=0; i<entities.size(); i++) {
-			ent = entities.get(i);
-			ent.tick();
+		for(int i=0; i<bullets.size(); i++) {
+			bullets.get(i).tick();
+		}
+		
+		for(int i=0; i<enemies.size(); i++) {
+			enemies.get(i).tick();
 		}
 	}
 	
 	public void render(Graphics g) {
-		for(int i=0; i<entities.size(); i++) {
-			ent = entities.get(i);
-			ent.render(g);
+		for(int i=0; i<bullets.size(); i++) {
+			bullets.get(i).render(g);
+		}
+		
+		for(int i=0; i<enemies.size(); i++) {
+			enemies.get(i).render(g);
 		}
 	}
 	
-	public void addEntity(EntityInterface block) {
-		entities.add(block);
+	public void addBullet(BulletEntity b) {
+		bullets.add(b);
 	}
 	
-	public void removeEntity(EntityInterface block) {
-		entities.remove(block);
+	public void removeBullet(BulletEntity b) {
+		bullets.remove(b);
+	}
+	
+	public void addEnemy(EnemyEntity e) {
+		enemies.add(e);
+	}
+	
+	public void removeEnemy(EnemyEntity e) {
+		enemies.remove(e);
+	}
+	
+	public LinkedList<BulletEntity> getBullets() {
+		return bullets;
+	}
+	
+	public LinkedList<EnemyEntity> getEnemies() {
+		return enemies;
 	}
 }

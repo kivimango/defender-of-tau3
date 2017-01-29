@@ -7,8 +7,12 @@ import java.awt.event.KeyEvent;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.LinkedList;
 
 import javax.swing.JFrame;
+
+import com.kivimango.spacefighter.entities.BulletEntity;
+import com.kivimango.spacefighter.entities.EnemyEntity;
 
 /**
  * Implementation of a 2D Space Fighter Game in JAVA.The code is based on RealTutsGML's 'Java Game Development' 
@@ -46,6 +50,9 @@ public class Game extends Canvas implements Runnable {
 	private int enemyCount = 1;
 	private int enemyKilled = 0;
 	
+	public LinkedList<BulletEntity> bullets = new LinkedList<BulletEntity>();
+	public LinkedList<EnemyEntity> enemies = new LinkedList<EnemyEntity>();
+	
 	public void init() {
 		requestFocus();
 		BufferedImageLoader loader = new BufferedImageLoader();
@@ -63,6 +70,9 @@ public class Game extends Canvas implements Runnable {
 			player = new Player(200, 200, textures);
 			controller = new Controller(textures);
 			controller.createEnemy(enemyCount);
+			
+			bullets = controller.getBullets();
+			enemies = controller.getEnemies();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -187,9 +197,8 @@ public class Game extends Canvas implements Runnable {
 		// prevent form the player to shoot endless stream of bullets
 		if(key == KeyEvent.VK_SPACE && !player.isShooting()) {
 			player.setShooting(true);
-			controller.addEntity(new Bullet(player.getX(), player.getY()-25, textures));
+			controller.addBullet((new Bullet(player.getX(), player.getY()-25, textures, this)));
 		}
-		
 	}
 	
 	public void keyReleased(KeyEvent e) {
